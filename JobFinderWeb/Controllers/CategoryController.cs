@@ -1,4 +1,5 @@
 ﻿using JobFinder.DataAccess;
+using JobFinder.DataAccess.Repository.IRepository;
 using JobFinder.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,16 +7,16 @@ namespace JobFinderWeb.Controllers
 {
     public class CategoryController : Controller
     {
-        private readonly ApplicationDbContext _db;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public CategoryController(ApplicationDbContext db)
+        public CategoryController(IUnitOfWork unitOfWork)
         {
-            _db = db;
+            _unitOfWork = unitOfWork;
         }
 
         public IActionResult Index()
         {
-            IEnumerable<Category> categories = _db.Categories;
+            IEnumerable<Category> categories = _unitOfWork.Category.GetAll();
             return View(categories);
         }
 
@@ -31,8 +32,8 @@ namespace JobFinderWeb.Controllers
         {
             if(ModelState.IsValid)
             {
-                _db.Categories.Add(category);
-                _db.SaveChanges();
+                _unitOfWork.Category.Add(category);
+                _unitOfWork.Save();
                 TempData["success"] = "Category Created";
                 return RedirectToAction("Index");
             }
@@ -46,7 +47,7 @@ namespace JobFinderWeb.Controllers
                 return NotFound();
             }
 
-            var category = _db.Categories.FirstOrDefault(c => c.Id == id);
+            var category = _unitOfWork.Category.GetFirstOrDefault(c => c.Id == id);
 
             if(category == null)
             {
@@ -62,8 +63,8 @@ namespace JobFinderWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-                _db.Categories.Update(category);
-                _db.SaveChanges();
+                _unitOfWork.Category.Update(category);
+                _unitOfWork.Save();
                 TempData["success"] = "Category Updated";
                 return RedirectToAction("Index");
             }
@@ -77,7 +78,7 @@ namespace JobFinderWeb.Controllers
                 return NotFound();
             }
 
-            var category = _db.Categories.FirstOrDefault(c => c.Id == id);
+            var category = _unitOfWork.Category.GetFirstOrDefault(c => c.Id == id);
 
             if (category == null)
             {
@@ -91,9 +92,15 @@ namespace JobFinderWeb.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeletePOST(int? id)
         {
-            var category = _db.Categories.Find(id);
-            _db.Categories.Remove(category);
-            _db.SaveChanges();
+            var category = _unitOfWork.Category.GetFirstOrDefault(c => c.Id == id);
+
+            if(category == null)
+            {
+                return NotFound();
+            }
+
+            _unitOfWork.Category.Remove(category);
+            _unitOfWork.Save();
             TempData["success"] = "Category Deleted";
             return RedirectToAction("Index");
         }
