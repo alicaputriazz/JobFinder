@@ -1,0 +1,46 @@
+﻿@model IEnumerable<WorkingMethod>
+
+@{
+    ViewData["Title"] = "Working Method List";
+}
+
+<div class="d-flex justify-content-between align-items-center">
+    <h1>Index Working Method</h1>
+    <a asp-controller="WorkingMethod" asp-action="Create" class="btn btn-primary">Add Working Method</a>
+</div>
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="table-responsive">
+            <partial name="_Alert" />
+            <div class="card">
+                <div class="card-body">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Working Method Name</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{ int rowNo = 0; }
+                            @foreach(var working in Model)
+                            {
+                                <tr>
+                                    <td>@(rowNo += 1)</td>
+                                    <td>@working.Name</td>
+                                    <td>
+                                        <a class="btn btn-warning btn-sm" asp-controller="WorkingMethod" asp-action="Edit" asp-route-id="@working.Id">Edit</a>
+                                        <a class="btn btn-danger btn-sm" asp-controller="WorkingMethod" asp-action="Delete" asp-route-id="@working.Id">Delete</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

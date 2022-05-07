@@ -1,0 +1,34 @@
+﻿@model WorkingMethod
+
+@{
+    ViewData["Title"] = "Edit Working Method";
+}
+
+<div class="d-flex justify-content-between align-items-center">
+    <h1>Edit Working Method</h1>
+</div>
+<hr />
+
+<div class="row">
+    <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <form method="post">
+                        <div class="mb-3">
+                            <label asp-for="Name"></label>
+                            <input asp-for="Name" class="form-control" />
+                            <span asp-validation-for="Name" class="text-danger pt-2"></span>
+                        </div>
+                        <button type="submit" class="btn btn-success">Update</button>
+                        <a class="btn btn-secondary" asp-controller="WorkingMethod" asp-action="Index">Back to List</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

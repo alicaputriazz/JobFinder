@@ -9,5 +9,6 @@ namespace JobFinder.DataAccess
         { }
 
         public DbSet<Category> Categories { get; set; }
+        public DbSet<WorkingMethod> WorkingMethods { get; set; }
     }
 }

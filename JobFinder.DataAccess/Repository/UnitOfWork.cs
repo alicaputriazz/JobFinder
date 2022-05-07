@@ -15,9 +15,11 @@ namespace JobFinder.DataAccess.Repository
         {
             _db = db;
             Category = new CategoryRepository(_db);
+            WorkingMethod = new WorkingMethodRepository(_db);
         }
 
         public ICategoryRepository Category { get; private set; }
+        public IWorkingMethodRepository WorkingMethod { get; private set; }
 
         public void Save()
         {

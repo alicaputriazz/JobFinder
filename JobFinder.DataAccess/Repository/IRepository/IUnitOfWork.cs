@@ -9,6 +9,7 @@ namespace JobFinder.DataAccess.Repository.IRepository
     public interface IUnitOfWork
     {
         ICategoryRepository Category { get; }
+        IWorkingMethodRepository WorkingMethod { get; }
 
         void Save();
     }
