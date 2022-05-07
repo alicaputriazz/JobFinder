@@ -1,22 +1,24 @@
-﻿using JobFinder.DataAccess.Repository.IRepository;
+﻿using JobFinder.DataAccess;
+using JobFinder.DataAccess.Repository.IRepository;
 using JobFinder.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JobFinderWeb.Controllers
 {
-    public class WorkingMethodController : Controller
+    [Area("Admin")]
+    public class CategoryController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public WorkingMethodController(IUnitOfWork unitOfWork)
+        public CategoryController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
 
         public IActionResult Index()
         {
-            IEnumerable<WorkingMethod> workingMethods = _unitOfWork.WorkingMethod.GetAll();
-            return View(workingMethods);
+            IEnumerable<Category> categories = _unitOfWork.Category.GetAll();
+            return View(categories);
         }
 
         public IActionResult Create()
@@ -27,16 +29,16 @@ namespace JobFinderWeb.Controllers
         // POST
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(WorkingMethod obj)
+        public IActionResult Create(Category category)
         {
-            if (ModelState.IsValid)
+            if(ModelState.IsValid)
             {
-                _unitOfWork.WorkingMethod.Add(obj);
+                _unitOfWork.Category.Add(category);
                 _unitOfWork.Save();
                 TempData["success"] = "Category Created";
                 return RedirectToAction("Index");
             }
-            return View(obj);
+            return View(category);
         }
 
         public IActionResult Edit(int? id)
@@ -46,59 +48,59 @@ namespace JobFinderWeb.Controllers
                 return NotFound();
             }
 
-            var workingMethod = _unitOfWork.WorkingMethod.GetFirstOrDefault(w => w.Id == id);
+            var category = _unitOfWork.Category.GetFirstOrDefault(c => c.Id == id);
 
-            if(workingMethod == null)
+            if(category == null)
             {
                 return NotFound();
             }
 
-            return View(workingMethod);
+            return View(category);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(WorkingMethod workingMethod)
+        public IActionResult Edit(Category category)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                _unitOfWork.WorkingMethod.Update(workingMethod);
+                _unitOfWork.Category.Update(category);
                 _unitOfWork.Save();
-                TempData["success"] = "Working Method Updated";
+                TempData["success"] = "Category Updated";
                 return RedirectToAction("Index");
             }
-            return View(workingMethod);
+            return View(category);
         }
 
         public IActionResult Delete(int? id)
         {
-            if(id == null || id == 0)
+            if (id == null || id == 0)
             {
                 return NotFound();
             }
 
-            var workingMethod = _unitOfWork.WorkingMethod.GetFirstOrDefault(w => w.Id == id);
+            var category = _unitOfWork.Category.GetFirstOrDefault(c => c.Id == id);
 
-            if(workingMethod == null)
+            if (category == null)
             {
                 return NotFound();
             }
 
-            return View(workingMethod);
+            return View(category);
         }
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public IActionResult DeletePOST(int? id)
         {
-            var workingMethod = _unitOfWork.WorkingMethod.GetFirstOrDefault(c => c.Id == id);
+            var category = _unitOfWork.Category.GetFirstOrDefault(c => c.Id == id);
 
-            if (workingMethod == null)
+            if(category == null)
             {
                 return NotFound();
             }
 
-            _unitOfWork.WorkingMethod.Remove(workingMethod);
+            _unitOfWork.Category.Remove(category);
             _unitOfWork.Save();
             TempData["success"] = "Category Deleted";
             return RedirectToAction("Index");
