@@ -1,18 +1,33 @@
 ﻿@model Category
 
 @{
-    ViewData["Title"] = "Create New Category";
+    ViewData["Title"] = "Delete Category";
 }
 
-<form method="post">
-    <div class="mb-3">
-        <label asp-for="Name"></label>
-        <input asp-for="Name" class="form-control" disabled/>
-        <span asp-validation-for="Name" class="text-danger mt-2"></span>
-    </div>
-    <button type="submit" class="btn btn-success">Submit</button>
-</form>
+<div class="d-flex justify-content-between align-items-center">
+    <h1>Delete Category</h1>
+</div>
+<hr />
 
+<h4>Are you sure wanna delete this data?</h4>
+
+<div class="row">
+    <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <form method="post">
+                        <div class="mb-3">
+                            <label asp-for="Name" class="form-label"></label>
+                            <input asp-for="Name" class="form-control" disabled />
+                            <span asp-validation-for="Name" class="text-danger pt-2"></span>
+                        </div>
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                        <a class="btn btn-secondary" asp-controller="Category" asp-action="Index">Cancel</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
