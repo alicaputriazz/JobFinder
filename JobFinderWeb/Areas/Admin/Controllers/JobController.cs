@@ -47,10 +47,11 @@ namespace JobFinderWeb.Controllers
             }
             else
             {
-                // update job
+                jobVM.Job = _unitOfWork.Job.GetFirstOrDefault(j => j.Id == id);
+                return View(jobVM);
             }
 
-            return View();
+            return View(jobVM);
         }
 
         [HttpPost]
@@ -59,47 +60,23 @@ namespace JobFinderWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-                _unitOfWork.Job.Add(obj.Job);
-                _unitOfWork.Save();
-                TempData["success"] = "New Job Created";
+                if(obj.Job.Id == 0)
+                {
+                    _unitOfWork.Job.Add(obj.Job);
+                    _unitOfWork.Save();
+                    TempData["success"] = "New Job Created";
+                }
+                else
+                {
+                    _unitOfWork.Job.Update(obj.Job);
+                    _unitOfWork.Save();
+                    TempData["success"] = "Job Updated";
+                }
                 return RedirectToAction("Index");
             }
             return View(obj);
         }
 
-        public IActionResult Delete(int? id)
-        {
-            if (id == null || id == 0)
-            {
-                return NotFound();
-            }
-
-            var category = _unitOfWork.Category.GetFirstOrDefault(c => c.Id == id);
-
-            if (category == null)
-            {
-                return NotFound();
-            }
-
-            return View(category);
-        }
-
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public IActionResult DeletePOST(int? id)
-        {
-            var category = _unitOfWork.Category.GetFirstOrDefault(c => c.Id == id);
-
-            if(category == null)
-            {
-                return NotFound();
-            }
-
-            _unitOfWork.Category.Remove(category);
-            _unitOfWork.Save();
-            TempData["success"] = "Category Deleted";
-            return RedirectToAction("Index");
-        }
 
         #region API CALLS
         [HttpGet]
@@ -109,6 +86,29 @@ namespace JobFinderWeb.Controllers
             return Json(new
             {
                 data = jobs
+            });
+        }
+
+        [HttpDelete]
+        public IActionResult Delete(int? id)
+        {
+            var job = _unitOfWork.Job.GetFirstOrDefault(j => j.Id == id);
+
+            if (job == null)
+            {
+                return Json(new
+                {
+                    success = false,
+                    message = "Error while deleting"
+                });
+            }
+
+            _unitOfWork.Job.Remove(job);
+            _unitOfWork.Save();
+            return Json(new
+            {
+                success = true,
+                message = "Job Successfully Deleted"
             });
         }
         #endregion
