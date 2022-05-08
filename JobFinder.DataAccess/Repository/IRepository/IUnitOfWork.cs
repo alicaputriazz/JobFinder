@@ -10,6 +10,7 @@ namespace JobFinder.DataAccess.Repository.IRepository
     {
         ICategoryRepository Category { get; }
         IWorkingMethodRepository WorkingMethod { get; }
+        IJobRepository Job { get; }
 
         void Save();
     }

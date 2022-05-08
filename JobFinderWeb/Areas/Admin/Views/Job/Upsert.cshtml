@@ -1,0 +1,80 @@
+﻿@model JobFinder.Models.ViewModels.JobVM
+
+@{
+    ViewData["Title"] = "Create New Category";
+}
+
+<div class="d-flex justify-content-between align-items-center">
+    <h1>Edit Job</h1>
+</div>
+<hr />
+
+<div class="row">
+    <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <form method="post">
+                        <div class="mb-3">
+                            <label asp-for="Job.Name" class="form-label"></label>
+                            <input asp-for="Job.Name" class="form-control" />
+                            <span asp-validation-for="Job.Name" class="text-danger pt-2"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Job.Description" class="form-label"></label>
+                            <textarea asp-for="Job.Description" class="form-control" rows="3"></textarea>
+                            <span asp-validation-for="Job.Description" class="text-danger pt-2"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Job.Location" class="form-label"></label>
+                            <input asp-for="Job.Location" class="form-control" />
+                            <span asp-validation-for="Job" class="text-danger pt-2"></span>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="mb-3">
+                                    <label asp-for="Job.StartDate" class="form-label"></label>
+                                    <input asp-for="Job.StartDate" class="form-control" />
+                                    <span asp-validation-for="Job.StartDate" class="text-danger pt-2"></span>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="mb-3">
+                                    <label asp-for="Job.EndDate" class="form-label"></label>
+                                    <input asp-for="Job.EndDate" class="form-control" />
+                                    <span asp-validation-for="Job.EndDate" class="text-danger pt-2"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="mb-3">
+                                    <label asp-for="Job.CategoryId" class="form-label"></label>
+                                    <select asp-for="Job.CategoryId" asp-items="@Model.CategoryList" class="form-control">
+                                        <option selected disabled>-- Choose Category --</option>
+                                    </select>
+                                    <span asp-validation-for="Job.CategoryId" class="text-danger pt-2"></span>
+                                </div>
+                            </div>
+                             <div class="col">
+                                <div class="mb-3">
+                                    <label asp-for="Job.WorkingMethodId" class="form-label"></label>
+                                    <select asp-for="Job.WorkingMethodId" asp-items="@Model.WorkingMethodList" class="form-control">
+                                        <option selected disabled>-- Choose Category --</option>
+                                    </select>
+                                    <span asp-validation-for="Job.WorkingMethodId" class="text-danger pt-2"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-success">Create</button>
+                        <a class="btn btn-secondary" asp-controller="Job" asp-action="Index">Back to List</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
